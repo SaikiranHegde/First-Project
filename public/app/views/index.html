@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="/">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/animate.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    
+    <!-- Angular built in files -->
+    <script src="assets/js/angular.js"></script>
+    <script src="assets/js/angular-route.js"></script>
+    <script src="assets/js/angular-animate.js"></script>
+
+    
+    <!-- Angular Config/Routes -->
+    <script src="app/app.js"></script>
+    <script src="app/routes.js"></script>
+    
+    <!-- Angular Controllers -->
+    <script src="app/controllers/userController.js"></script>
+    <script src="app/controllers/mainController.js"></script>
+    
+    <!-- Angular Services -->
+    <script src="app/services/userServices.js"></script>
+    <script src="app/services/authServices.js"></script>
+    
+</head>
+
+<body ng-app="userApp" ng-controller="mainCtrl as main" style="margin-left: 150px; margin-right: 150px">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false">
+            <span class="sr-only">Toggle Navigation</span>
+            <span class="sr-only"></span>
+            <span class="sr-only"></span>
+            <span class="sr-only"></span>
+            </button>
+                <a class="navbar-brand" href="#">Bootstrap Theme</a>
+            </div>
+            <div class="navbar-collapse collapse" id="navbar">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/login">Login</a>
+                    </li>
+                    <li>
+                        <a href="/register">Register</a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another Action</a></li>
+                            <li><a href="#">Something else</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-header">Nav Header</li>
+                            <li><a href="#">Seperated Link</a></li>
+                            <li><a href="#">One more seperated link</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <br>
+    <div ng-view></div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="assets/js/jquery.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.js"></script>
+</body>
+
+</html>
