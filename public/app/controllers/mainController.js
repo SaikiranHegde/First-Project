@@ -1,26 +1,43 @@
 angular.module('mainController', ['authServices'])
 
-.controller('mainCtrl', function($location, $timeout, Auth){
+.controller('mainCtrl', function ($location, $timeout, Auth) {
     var app = this;
 
-        app.doLogin = function () {
+    if (Auth.isLoggedIn()) {
+        console.log("Success: User is Logged In");
+        Auth.getUser().then(function (data) {
+            console.log(data);
+        });
+    } else {
+        console.log("Failure: User is Not Logged In");
+    }
 
-            Auth.login(app.loginData).then(function (data) {
-                app.errorMsg = false;
+    app.doLogin = function () {
 
-                /* console.log(data.data.success);
-                 console.log(data.data.message);*/
+        Auth.login(app.loginData).then(function (data) {
+            app.errorMsg = false;
 
-                if (data.data.success) {
-                    app.successMsg = data.data.message;
+            /* console.log(data.data.success);
+             console.log(data.data.message);*/
 
-                    $timeout(function () {
-                        $location.path('/'); //For re-directing
-                    }, 2000);
+            if (data.data.success) {
+                app.successMsg = data.data.message;
 
-                } else {
-                    app.errorMsg = data.data.message;
-                }
-            });
-        };
+                $timeout(function () {
+                    $location.path('/'); //For re-directing
+                }, 2000);
+
+            } else {
+                app.errorMsg = data.data.message;
+            }
+        });
+    };
+
+    app.logOut = function () {
+        Auth.logOut();
+        $location.path('/logout');
+        $timeout(function () {
+            $location.path('/'); //For re-directing
+        }, 2000);
+    };
 });
