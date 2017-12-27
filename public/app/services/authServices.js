@@ -50,11 +50,13 @@ angular.module('authServices', [])
 .factory('AuthInterceptors', function(AuthToken){
     var authInterceptorsFactory = {};
     
-    authInterceptorFactory.request = function(config){
+    authInterceptorsFactory.request = function(config){
         var token = AuthToken.getToken();
         
         if(token) config.headers['x-access-token'] = token;
         
         return config;
     }
+    
+    return authInterceptorsFactory;
 })

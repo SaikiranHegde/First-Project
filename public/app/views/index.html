@@ -34,7 +34,7 @@
     
 </head>
 
-<body ng-app="userApp" ng-controller="mainCtrl as main" style="margin-left: 150px; margin-right: 150px">
+<body ng-app="userApp" ng-controller="mainCtrl as main" ng-show="main.loadme" ng-cloak style="margin-left: 150px; margin-right: 150px">
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -45,7 +45,7 @@
             <span class="sr-only"></span>
             <span class="sr-only"></span>
             </button>
-                <a class="navbar-brand" href="#">Bootstrap Theme</a>
+                <a class="navbar-brand" href="#">User Management</a>
             </div>
             <div class="navbar-collapse collapse" id="navbar">
                 <ul class="nav navbar-nav">
@@ -53,13 +53,13 @@
                         <a href="/">Home</a>
                     </li>
                     <li>
-                        <a href="/login">Login</a>
+                        <a href="/login" ng-show="!main.isLoggedIn">Login</a>
                     </li>
                     <li>
-                        <a href="/register">Register</a>
+                        <a href="/register" ng-show="!main.isLoggedIn">Register</a>
                     </li>
                     <li>
-                        <a href="#" ng-click="main.logOut();">LogOut</a>
+                        <a href="#" ng-click="main.logOut();" ng-show="main.isLoggedIn">LogOut</a>
                     </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown<span class="caret"></span></a>
@@ -72,6 +72,9 @@
                             <li><a href="#">Seperated Link</a></li>
                             <li><a href="#">One more seperated link</a></li>
                         </ul>
+                    </li>
+                    <li>
+                        <a href="/profile" ng-show="main.isLoggedIn">Hello, {{ main.username }}</a>
                     </li>
                 </ul>
             </div>
