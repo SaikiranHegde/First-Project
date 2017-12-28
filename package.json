@@ -20,6 +20,8 @@
     "jsonwebtoken": "^8.1.0",
     "mongoose": "^4.11.9",
     "morgan": "^1.8.2",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1",
     "popper.js": "^1.12.5"
   }
 }
