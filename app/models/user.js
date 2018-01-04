@@ -1,8 +1,14 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt-nodejs');
+var titlize = require('mongoose-title-case');
+var validate = require('mongoose-validator');
 
 var UserSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
     username: {
         type: String,
         lowercase: true,
@@ -20,6 +26,11 @@ var UserSchema = new Schema({
         unique: true
     }
 });
+
+UserSchema.plugin(titlize, {
+    paths: ['name']
+});
+
 
 /*UserSchema.pre('save', function (next) {
     var user = this;

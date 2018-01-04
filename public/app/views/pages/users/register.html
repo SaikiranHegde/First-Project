@@ -4,6 +4,11 @@
 
 <div style="margin-left: 50px; margin-right: 50px">
 <form ng-submit="register.regUser()">
+    <!-- Name -->
+    <label>Name</label>
+    <input class="form-control" type="text" name="name" placeholder="Please enter your Name" ng-model="register.regData.name">
+    <br>
+    
     <!-- Email -->
     <label>Email</label>
     <input class="form-control" type="text" name="email" placeholder="Please enter the Email" ng-model="register.regData.email">
