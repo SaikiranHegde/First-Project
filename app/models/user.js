@@ -4,26 +4,70 @@ var bcrypt = require('bcrypt-nodejs');
 var titlize = require('mongoose-title-case');
 var validate = require('mongoose-validator');
 
+var nameValidator = [
+  validate({
+        validator: 'matches',
+        arguments: /^[a-zA-Z ]+$/,
+        message: 'No Special Characters except Space'
+    })
+];
+
+var emailValidator = [
+  validate({
+        validator: 'isEmail',
+        message: 'Not a Valid Email'
+    }),
+    validate({
+        validator: 'isLength',
+        arguments: [5, 50],
+        message: 'Email should be between {ARGS[0]} and {ARGS[1]} characters'
+    })
+];
+
+var usernameValidator = [
+  validate({
+        validator: 'isAlphanumeric',
+        message: 'Username should contain only Alphabets & Numerals'
+    }),
+    validate({
+        validator: 'isLength',
+        arguments: [3, 25],
+        message: 'Username should be between {ARGS[0]} and {ARGS[1]} characters'
+    })
+];
+
+var passwordValidator = [
+     validate({
+        validator: 'isLength',
+        arguments: [8, 25],
+        message: 'Password should be between {ARGS[0]} and {ARGS[1]} characters'
+    })
+];
+
 var UserSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        validate: nameValidator
     },
     username: {
         type: String,
         lowercase: true,
         required: true,
-        unique: true
+        unique: true,
+        validate: usernameValidator
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        validate: passwordValidator
     },
     email: {
         type: String,
         required: true,
         lowercase: true,
-        unique: true
+        unique: true,
+        validate: emailValidator
     }
 });
 
