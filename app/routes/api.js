@@ -120,6 +120,51 @@ module.exports = function (router) {
         });
     });
 
+    //http://localhost:8080/api/checkusername
+    router.post('/checkusername', function (req, res) {
+        var validPassword;
+        User.findOne({
+            username: req.body.username
+        }).select('username').exec(function (err, user) {
+            if (err) throw err;
+
+            if (user) {
+                res.json({
+                    success: false,
+                    message: 'Username is already taken!!'
+                });
+            } else {
+                res.json({
+                    success: true,
+                    message: 'Valid Username'
+                });
+            }
+
+        });
+    });
+
+    //http://localhost:8080/api/checkemail
+    router.post('/checkemail', function (req, res) {
+    User.findOne({
+            email: req.body.email
+        }).select('email').exec(function (err, user) {
+            if (err) throw err;
+
+            if (user) {
+                res.json({
+                    success: false,
+                    message: 'E-Mail is already taken!!'
+                });
+            } else {
+                res.json({
+                    success: true,
+                    message: 'Valid E-Mail'
+                });
+            }
+
+        });
+    });
+
     router.use(function (req, res, next) {
         var token = req.body.token || req.body.query || req.headers['x-access-token'];
         if (token) {
