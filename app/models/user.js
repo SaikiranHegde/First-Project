@@ -73,6 +73,15 @@ var UserSchema = new Schema({
         lowercase: true,
         unique: true,
         validate: emailValidator
+    },
+    active: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    temptoken: {
+        type: String,
+        required: true
     }
 });
 

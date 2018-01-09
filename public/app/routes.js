@@ -1,47 +1,53 @@
 var app = angular.module('appRoutes', ['ngRoute'])
-    
-.config(function ($routeProvider, $locationProvider) {
-    $routeProvider
 
-        .when('/', {
-            templateUrl: 'app/views/pages/home.html'
-        })
+    .config(function ($routeProvider, $locationProvider) {
+        $routeProvider
 
-        .when('/about', {
-            templateUrl: 'app/views/pages/about.html'
-        })
+            .when('/', {
+                templateUrl: 'app/views/pages/home.html'
+            })
 
-        .when('/register', {
-            templateUrl: 'app/views/pages/users/register.html',
-            controller: 'regCtrl',
-            controllerAs: 'register',
-            authenticated: false
-        })
+            .when('/about', {
+                templateUrl: 'app/views/pages/about.html'
+            })
 
-        .when('/login', {
-            templateUrl: 'app/views/pages/users/login.html',
-            authenticated: false
-        })
+            .when('/register', {
+                templateUrl: 'app/views/pages/users/register.html',
+                controller: 'regCtrl',
+                controllerAs: 'register',
+                authenticated: false
+            })
 
-        .when('/logout', {
-            templateUrl: 'app/views/pages/users/logout.html',
-            authenticated: true
-        })
+            .when('/login', {
+                templateUrl: 'app/views/pages/users/login.html',
+                authenticated: false
+            })
 
-        .when('/profile', {
-            templateUrl: 'app/views/pages/users/profile.html',
-            authenticated: true
-        })
+            .when('/logout', {
+                templateUrl: 'app/views/pages/users/logout.html',
+                authenticated: true
+            })
 
-        .otherwise({
-            redirectTo: '/'
+            .when('/profile', {
+                templateUrl: 'app/views/pages/users/profile.html',
+                authenticated: true
+            })
+
+            .when('/activate/:token', {
+                templateUrl: 'app/views/pages/activation/activate.html',
+                controller: 'emailCtrl',
+                controllerAs: 'email'
+            })
+
+            .otherwise({
+                redirectTo: '/'
+            });
+
+        $locationProvider.html5Mode({
+            enabled: true,
+            requireBase: false
         });
-
-    $locationProvider.html5Mode({
-        enabled: true,
-        requireBase: false
     });
-});
 
 //Run Block - Restricting Routes
 app.run(['$rootScope', 'Auth', '$location', function ($rootScope, Auth, $location) {

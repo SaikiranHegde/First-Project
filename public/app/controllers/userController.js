@@ -59,7 +59,8 @@ angular.module('userControllers', ['userServices'])
             });
         };
     })
-
+    
+    //A custom directive for Password Match
     .directive('match', function () {
         return {
             restrict: 'A',
