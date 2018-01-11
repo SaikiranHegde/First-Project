@@ -65,7 +65,8 @@ var UserSchema = new Schema({
     password: {
         type: String,
         required: true,
-        validate: passwordValidator
+        validate: passwordValidator,
+        select: false
     },
     email: {
         type: String,

@@ -9,8 +9,13 @@ module.exports = function (router) {
     var options = {
         auth: {
             api_user: 'saikiran_hegde',
-            api_key: 'send@1234'
+            api_key: 'send1234'
         }
+        /*,
+        	options: {
+        		proxy: 'http://saikiran_hegde:Passwd%402018@goaproxy.persistent.co.in:8080',
+                
+        	}*/
     }
 
     var client = nodemailer.createTransport(sgTransport(options));
@@ -77,7 +82,7 @@ module.exports = function (router) {
                 } else {
 
                     var email = {
-                        from: 'Localhost Staff, staff@localhost.com',
+                        from: 'staff@localhost.com',
                         to: user.email,
                         subject: 'Localhost Activation Link',
                         text: 'Hello ' + user.name + ', thank you for registering. http://localhost:8080/activate/' + user.temptoken,
@@ -107,7 +112,7 @@ module.exports = function (router) {
         var validPassword;
         User.findOne({
             username: req.body.username
-        }).select('email username password').exec(function (err, user) {
+        }).select('email username password active').exec(function (err, user) {
             if (err) throw err;
 
             if (!user) {
@@ -136,6 +141,12 @@ module.exports = function (router) {
                         success: false,
                         message: 'Could not authenticate Password!'
                     });
+                } else if (!user.active) {
+                    res.json({
+                        success: false,
+                        message: 'Account is not yet Activated. Please check your email!',
+                        expired: true
+                    });
                 } else {
                     var token = jwt.sign({
                         username: user.username,
@@ -151,6 +162,97 @@ module.exports = function (router) {
                 }
             }
 
+        });
+    });
+
+    //Resend Activation Link
+    //http://localhost:8080/api/resend
+    router.post('/resend', function (req, res) {
+        var validPassword;
+        User.findOne({
+            username: req.body.username
+        }).select('username password active').exec(function (err, user) {
+            if (err) throw err;
+
+            if (!user) {
+                res.json({
+                    success: false,
+                    message: 'Could not authenticate User!'
+                });
+            } else if (user) {
+                if (req.body.password) {
+                    /*console.log(req.body.password);
+                    validPassword = user.comparePassword(req.body.password);
+                    console.log(validPassword);*/
+                    if (req.body.password == user.password)
+                        validPassword = true;
+                    else
+                        validPassword = false;
+                } else {
+                    res.json({
+                        success: false,
+                        message: 'No Password provided!'
+                    });
+                }
+
+                if (!validPassword) {
+                    res.json({
+                        success: false,
+                        message: 'Could not authenticate Password!'
+                    });
+                } else if (user.active) {
+                    res.json({
+                        success: false,
+                        message: 'Account is already Activated!'
+                    });
+                } else {
+                    res.json({
+                        success: true,
+                        user: user
+                    });
+                }
+            }
+
+        });
+    });
+
+    router.put('/resend', function (req, res) {
+        var validPassword;
+        User.findOne({
+            username: req.body.username
+        }).select('username name email temptoken').exec(function (err, user) {
+            if (err) throw err;
+            user.temptoken = jwt.sign({
+                username: user.username,
+                email: user.email
+            }, secret, {
+                expiresIn: '24h'
+            });
+            user.save(function(err){
+                if(err){
+                    console.log(err);
+                } else {
+                     var email = {
+                        from: 'staff@localhost.com',
+                        to: user.email,
+                        subject: 'Localhost Activation Link',
+                        text: 'Hello ' + user.name + ', You recently requested new account activation link. http://localhost:8080/activate/' + user.temptoken,
+                        html: 'Hello <b>' + user.name + '</b>, <br><br>You recently requested new account activation link.<br><a href="http://localhost:8080/activate/' + user.temptoken + '">Link</a>'
+                    };
+
+                    client.sendMail(email, function (err, info) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log('Message sent: ' + info.response);
+                        }
+                    });
+                    res.json({
+                        success: true,
+                        message: 'Activation link has been sent to ' + user.email +'!!'
+                    });
+                }
+            })
         });
     });
 

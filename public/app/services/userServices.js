@@ -15,5 +15,17 @@ angular.module('userServices', [])
         return $http.post('/api/checkemail', regData);
     };
     
+    userFactory.activateAccount = function(token){
+        return $http.put('/api/activate' + token);
+    };
+    
+    userFactory.checkCredentials = function(loginData){
+        return $http.post('/api/resend', loginData);
+    };
+    
+    userFactory.resendLink = function(username){
+        return $http.put('/api/resend', username);
+    };
+    
     return userFactory;
 });

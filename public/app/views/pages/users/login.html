@@ -6,16 +6,17 @@
 <form ng-submit="main.doLogin()">
     <!-- Username -->
     <label>Username</label>
-    <input class="form-control" type="text" name="username" placeholder="Please enter the Username" ng-model="main.loginData.username">
+    <input ng-disabled="main.disabled" class="form-control" type="text" name="username" placeholder="Please enter the Username" ng-model="main.loginData.username">
     <br>
 
     <!-- Password -->
     <label>Password</label>
-    <input class="form-control" type="password" name="password" placeholder="Please enter the Password" ng-model="main.loginData.password">
+    <input ng-disabled="main.disabled" class="form-control" type="password" name="password" placeholder="Please enter the Password" ng-model="main.loginData.password">
     <br>
     
-    <button class="btn btn-primary" type="submit">Login</button>&nbsp;
+    <button ng-disabled="main.disabled" class="btn btn-primary" type="submit">Login</button>&nbsp;
    <!-- <button class="btn btn-warning" type="button" ng-click="main.twitter()">Twitter</button>-->
+        
 </form>
 
 <br>
@@ -27,6 +28,6 @@
 <br>
 
 <div class="row show-hide-message" ng-show="main.errorMsg">
-    <div class="alert alert-danger">{{ main.errorMsg }}</div>
+    <div class="alert alert-danger">{{ main.errorMsg }} &nbsp; <a href="/resend" ng-show="main.expired"><button type="button" class="btn btn-success">Resend Activation Link</button></a></div>
 </div> 
 </div>
