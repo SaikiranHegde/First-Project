@@ -83,6 +83,10 @@ var UserSchema = new Schema({
     temptoken: {
         type: String,
         required: true
+    },
+    resettoken: {
+        type: String,
+        required: false
     }
 });
 

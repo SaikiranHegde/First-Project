@@ -1,4 +1,4 @@
-angular.module('userControllers', ['userServices'])
+angular.module('userController', ['userServices'])
 
     .controller('regCtrl', function ($location, $timeout, User) {
 

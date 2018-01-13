@@ -23,9 +23,21 @@ angular.module('userServices', [])
         return $http.post('/api/resend', loginData);
     };
     
-    userFactory.resendLink = function(username){
-        return $http.put('/api/resend', username);
+    userFactory.resendLink = function(loginData){
+        return $http.put('/api/resend', loginData);
     };
+    
+    userFactory.sendUsername = function(userData){
+        return $http.get('/api/sendusername/' + userData);
+    };
+    
+    userFactory.sendPassword = function(resetData){
+        return $http.put('/api/resetpassword', resetData);
+    }
+    
+    userFactory.checkUser = function(token){
+        return $http.get('/api/resetpassword/' + token);
+    }
     
     return userFactory;
 });

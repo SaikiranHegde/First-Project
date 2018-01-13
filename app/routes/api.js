@@ -228,16 +228,16 @@ module.exports = function (router) {
             }, secret, {
                 expiresIn: '24h'
             });
-            user.save(function(err){
-                if(err){
+            user.save(function (err) {
+                if (err) {
                     console.log(err);
                 } else {
-                     var email = {
+                    var email = {
                         from: 'staff@localhost.com',
                         to: user.email,
                         subject: 'Localhost Activation Link',
                         text: 'Hello ' + user.name + ', You recently requested new account activation link. http://localhost:8080/activate/' + user.temptoken,
-                        html: 'Hello <b>' + user.name + '</b>, <br><br>You recently requested new account activation link.<br><a href="http://localhost:8080/activate/' + user.temptoken + '">Link</a>'
+                        html: 'Hello <b>' + user.name + '</b>, <br><br>You recently requested new account activation link: <a href="http://localhost:8080/activate/' + user.temptoken + '">Link</a>'
                     };
 
                     client.sendMail(email, function (err, info) {
@@ -249,7 +249,7 @@ module.exports = function (router) {
                     });
                     res.json({
                         success: true,
-                        message: 'Activation link has been sent to ' + user.email +'!!'
+                        message: 'Activation link has been sent to ' + user.email + '!!'
                     });
                 }
             })
@@ -352,6 +352,173 @@ module.exports = function (router) {
         });
     });
 
+    //To get Username
+    router.get('/sendusername/:email', function (req, res) {
+        User.findOne({
+            email: req.params.email
+        }).select('email name username').exec(function (err, user) {
+            if (err) {
+                res.json({
+                    success: false,
+                    message: err
+                });
+            } else {
+                if (!user) {
+                    res.json({
+                        success: false,
+                        message: 'E-mail was not found'
+                    });
+                } else {
+                    var email = {
+                        from: 'Localhost Staff, staff@localhost.com',
+                        to: user.email,
+                        subject: 'Localhost Username Request',
+                        text: 'Hello ' + user.name + ', Your recently requested your username. Please save it: ' + user.username,
+                        html: 'Hello <b>' + user.name + '</b>, <br><br> Your recently requested your username. Please save it:' + user.username
+                    };
+
+                    client.sendMail(email, function (err, info) {
+                        if (err) {
+                            console.log(error);
+                        } else {
+                            console.log('Message sent: ' + info.response);
+                        }
+                    });
+                    res.json({
+                        success: true,
+                        message: 'Username has been sent to email: ' + user.email
+                    });
+                }
+            }
+        });
+    });
+
+    router.put('/resetpassword', function (req, res) {
+        User.findOne({
+            email: req.body.email
+        }).select('email name username resettoken active').exec(function (err, user) {
+            if (err) throw err;
+            if (!user) {
+                res.json({
+                    success: false,
+                    message: 'Username was not found!!'
+                });
+            } else if (!user.active) {
+                res.json({
+                    success: false,
+                    message: 'Account has not been Activated!!'
+                });
+            } else {
+                user.resettoken = jwt.sign({
+                    username: user.username,
+                    email: user.email
+                }, secret, {
+                    expiresIn: '24h'
+                });
+                user.save(function (err) {
+                    if (err) {
+                        res.json({
+                            success: false,
+                            message: err
+                        });
+                    } else {
+                        var email = {
+                            from: 'Localhost Staff, staff@localhost.com',
+                            to: user.email,
+                            subject: 'Localhost Reset Password Request',
+                            text: 'Hello ' + user.name + ', You recently requested a password reset link. Please click on the link to reset password: http://localhost:8080/reset/' + user.resettoken,
+                            html: 'Hello <b>' + user.name + '</b>, <br><br>You recently requested a password reset link. Please click on the link to reset password:<a href="http://localhost:8080/reset/' + user.resettoken + '">Link</a>'
+                        };
+
+                        client.sendMail(email, function (err, info) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log('Message sent: ' + info.response);
+                            }
+                        });
+
+                        res.json({
+                            success: true,
+                            message: 'Account created, Please check your email for password reset link!!'
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+
+    router.get('/resetpassword/:token', function (req, res) {
+        User.findOne({
+            resettoken: req.params.token
+        }).select().exec(function (err, user) {
+            if (err) throw err;
+            var token = req.params.token;
+            jwt.verify(token, secret, function (err, decoded) {
+                if (err) {
+                    res.json({
+                        success: false,
+                        message: 'Token Invalid'
+                    });
+                } else {
+                    res.json({
+                        success: false,
+                        user: user
+                    });
+                }
+            });
+        });
+    });
+
+
+    router.put('/resetpassword', function (req, res) {
+        User.findOne({
+            username: req.body.username
+        }).select('email name username resettoken active').exec(function (err, user) {
+                if (err) throw err;
+            if(req.body.password == null || req.body.password == ''){
+                res.json({
+                        success: false,
+                        message: 'Password not provided'
+                    });
+            } else {
+                user.password = req.body.password;
+                user.resettoken = false;
+                user.save(function (err) {
+                    if (err) {
+                        res.json({
+                            success: false,
+                            message: err
+                        });
+                    } else {
+                        var email = {
+                            from: 'Localhost Staff, staff@localhost.com',
+                            to: user.email,
+                            subject: 'Localhost Reset Password',
+                            text: 'Hello ' + user.name + ', This e-mail is to notify you that your Password has been reset',
+                            html: 'Hello <b>' + user.name + '</b>, <br><br>This e-mail is to notify you that your Password has been reset'
+                        };
+
+                        client.sendMail(email, function (err, info) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log('Message sent: ' + info.response);
+                            }
+                        });
+
+                        res.json({
+                            success: true,
+                            message: 'Password has been reset!!'
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    //Middleware
     router.use(function (req, res, next) {
         var token = req.body.token || req.body.query || req.headers['x-access-token'];
         if (token) {

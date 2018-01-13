@@ -1,5 +1,6 @@
 var app = angular.module('appRoutes', ['ngRoute'])
 
+//We use authenticated to set whether or not to access the page when loggedin
     .config(function ($routeProvider, $locationProvider) {
         $routeProvider
 
@@ -36,15 +37,38 @@ var app = angular.module('appRoutes', ['ngRoute'])
             .when('/activate/:token', {
                 templateUrl: 'app/views/pages/activation/activate.html',
                 controller: 'emailCtrl',
-                controllerAs: 'email'
+                controllerAs: 'email',
+                authenticated: false
             })
 
             .when('/resend', {
                 templateUrl: 'app/views/pages/activation/resend.html',
                 controller: 'resendCtrl',
-                controllerAs: 'resend'
+                controllerAs: 'resend',
+                authenticated: false
             })
 
+            .when('/resetpassword', {
+                templateUrl: 'app/views/pages/reset/password.html',
+                controller: 'passwordCtrl',
+                controllerAs: 'password',
+                authenticated: false
+            })
+
+            .when('/resendusername', {
+                templateUrl: 'app/views/pages/reset/username.html',
+                controller: 'usernameCtrl',
+                controllerAs: 'username',
+                authenticated: false
+            })
+
+            .when('/reset/:token', {
+                templateUrl: 'app/views/pages/reset/newpassword.html',
+                controller: 'resetCtrl',
+                controllerAs: 'reset',
+                authenticated: false
+            })
+        
             .otherwise({
                 redirectTo: '/'
             });
