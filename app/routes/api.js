@@ -462,26 +462,33 @@ module.exports = function (router) {
                         message: 'Token Invalid'
                     });
                 } else {
-                    res.json({
-                        success: false,
-                        user: user
-                    });
+                    if (!user) {
+                        res.json({
+                            success: false,
+                            message: 'Token Invalid'
+                        });
+                    } else {
+                        res.json({
+                            success: true,
+                            user: user
+                        });
+                    }
                 }
             });
         });
     });
 
 
-    router.put('/resetpassword', function (req, res) {
+    router.put('/savepassword', function (req, res) {
         User.findOne({
             username: req.body.username
         }).select('email name username resettoken active').exec(function (err, user) {
-                if (err) throw err;
-            if(req.body.password == null || req.body.password == ''){
+            if (err) throw err;
+            if (req.body.password == null || req.body.password == '') {
                 res.json({
-                        success: false,
-                        message: 'Password not provided'
-                    });
+                    success: false,
+                    message: 'Password not provided'
+                });
             } else {
                 user.password = req.body.password;
                 user.resettoken = false;
@@ -545,6 +552,32 @@ module.exports = function (router) {
     //http://localhost:8080/api/userInfo
     router.post('/userInfo', function (req, res) {
         res.send(req.decoded);
+    });
+
+    //Provide New Token to User
+    router.get('/renewToken/:username', function (req, res) {
+        User.findOne({
+            username: req.params.username
+        }).select('username email').exec(function (err, user) {
+            if (err) throw err;
+            if (!user) {
+                res.json({
+                    success: false,
+                    message: 'No user was found'
+                });
+            } else {
+                var newToken = jwt.sign({
+                    username: user.username,
+                    email: user.email
+                }, secret, {
+                    expiresIn: '24h'
+                });
+                res.json({
+                    success: true,
+                    token: newToken
+                });
+            }
+        });
     });
 
     return router;

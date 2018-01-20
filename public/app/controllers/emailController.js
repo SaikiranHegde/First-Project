@@ -62,7 +62,7 @@ angular.module('emailController', ['userServices'])
                     }
                 });
             } else {
-                app.disabled = true;
+                app.disabled = false;
                 app.errorMsg = "Please enter a valid e-mail";
             }
         };
@@ -85,8 +85,48 @@ angular.module('emailController', ['userServices'])
                     }
                 });
             } else {
-                app.disabled = true;
+                app.disabled = false;
                 app.errorMsg = "Please enter a valid username";
+            }
+        };
+    })
+
+    .controller('resetCtrl', function (User, $routeParams, $scope, $timeout, $location) {
+        app = this;
+        app.hide = true;
+
+        User.checkUser($routeParams.token).then(function (data) {
+            if (data.data.success) {
+                app.hide = false;
+                app.successMsg = "Please enter a new Password";
+                $scope.username = data.data.user.username;
+            } else {
+                app.errorMsg = data.data.message;
+            }
+        });
+
+
+        app.savePassword = function (regData, valid) {
+            app.errorMsg = false;
+            app.disabled = true;
+
+            if (valid) {
+                app.regData.username = $scope.username;
+                User.savePassword(app.regData).then(function (data) {
+                    if (data.data.success) {
+                        app.successMsg = data.data.message;
+
+                        $timeout(function () {
+                            $location.path("/login");
+                        }, 2000);
+                    } else {
+                        app.disabled = false;
+                        app.errorMsg = data.data.message;
+                    }
+                });
+            } else {
+                app.disabled = false;
+                app.errorMsg = "Please ensure form is filled out properly";
             }
         };
     });

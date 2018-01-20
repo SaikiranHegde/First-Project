@@ -7,36 +7,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-   <!-- <meta http-equiv="Content-Security-Policy" content="img-src 'self' https://*.twitter.com/ " />-->
+    <!-- <meta http-equiv="Content-Security-Policy" content="img-src 'self' https://*.twitter.com/ " />-->
     <title>Website</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="assets/css/animate.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    
+
     <!--Our Custom CSS-->
-     <link rel="stylesheet" type="text/css" href="assets/css/custom.css">
-    
+    <link rel="stylesheet" type="text/css" href="assets/css/custom.css">
+
     <!-- Angular built in files -->
     <script src="assets/js/angular.js"></script>
     <script src="assets/js/angular-route.js"></script>
     <script src="assets/js/angular-animate.js"></script>
 
-    
+
     <!-- Angular Config/Routes -->
     <script src="app/app.js"></script>
     <script src="app/routes.js"></script>
-    
+
     <!-- Angular Controllers -->
     <script src="app/controllers/userController.js"></script>
     <script src="app/controllers/mainController.js"></script>
     <script src="app/controllers/emailController.js"></script>
-    
+
     <!-- Angular Services -->
     <script src="app/services/userServices.js"></script>
     <script src="app/services/authServices.js"></script>
-    
+
 </head>
 
 <body ng-app="userApp" ng-controller="mainCtrl as main" ng-show="main.loadme" ng-cloak style="margin-left: 150px; margin-right: 150px">
@@ -89,6 +89,28 @@
     <br>
     <div ng-view></div>
 
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" ng-click="main.endSession();" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{{ main.modalHeader }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{ main.modalBody }}</p>
+                    <div ng-show="main.hideButton" class="dizzy-gillespie"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" ng-hide="main.hideButton" class="btn btn-default" ng-click="main.renewSession();" data-dismiss="modal">Yes</button>
+                    <button type="button" ng-hide="main.hideButton" class="btn btn-default" ng-click="main.endSession();" data-dismiss="modal">No</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
