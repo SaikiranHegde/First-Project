@@ -32,6 +32,7 @@
     <script src="app/controllers/userController.js"></script>
     <script src="app/controllers/mainController.js"></script>
     <script src="app/controllers/emailController.js"></script>
+    <script src="app/controllers/managementContoller.js"></script>
 
     <!-- Angular Services -->
     <script src="app/services/userServices.js"></script>
@@ -65,6 +66,9 @@
                     </li>
                     <li>
                         <a href="#" ng-click="main.logOut();" ng-show="main.isLoggedIn">LogOut</a>
+                    </li>
+                    <li>
+                        <a href="/management" ng-show="main.isLoggedIn && main.authorized">Management</a>
                     </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown<span class="caret"></span></a>

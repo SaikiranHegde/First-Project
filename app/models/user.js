@@ -87,6 +87,11 @@ var UserSchema = new Schema({
     resettoken: {
         type: String,
         required: false
+    },
+    permission: {
+        type: String,
+        required: true,
+        default: 'user'
     }
 });
 

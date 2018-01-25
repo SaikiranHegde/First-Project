@@ -96,6 +96,8 @@
             }
 
             $rootScope.$on('$routeChangeStart', function () {
+                if (!app.checkingSession) app.checkSession();
+
                 if (Auth.isLoggedIn()) {
                     //console.log("Success: User is Logged In");
                     app.isLoggedIn = true;
@@ -103,7 +105,14 @@
                         //console.log(data.data.username);
                         app.username = data.data.username;
                         app.useremail = data.data.email;
-                        app.loadme = true;
+
+                        User.getPermission().then(function (data) {
+                            app.loadme = true;
+                            if (data.data.permission === 'admin' || data.data.permission === 'moderator') {
+                                app.authorized = true;
+                            }
+                        });
+
                     });
                 } else {
                     //console.log("Failure: User is Not Logged In");
