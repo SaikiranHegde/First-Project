@@ -1,0 +1,87 @@
+<div class="page-header">
+    <h1>Edit User</h1>
+</div>
+
+<div style="margin-left: 50px; margin-right: 50px">
+
+    <ul class="nav nav-tabs">
+        <li role="presentation" ng-click="edit.namePhase();" ng-class="nameTab"><a href="#">Name</a></li>
+        <li role="presentation" ng-click="edit.usernamePhase();" ng-class="usernameTab"><a href="#">Username</a></li>
+        <li role="presentation" ng-click="edit.emailPhase();" ng-class="emailTab"><a href="#">E-mail</a></li>
+        <li role="presentation" ng-click="edit.permissionsPhase();" ng-class="permissionsTab"><a href="#">Permission</a></li>
+    </ul>
+
+    <!-- Phase 1: Name -->
+    <form name="edit.nameForm" ng-show="edit.phase1" ng-submit="edit.updateName(newName, edit.nameForm.name.$valid)" novalidate>
+        <!-- Name -->
+        <div ng-class="{ 'has-success': (edit.nameForm.name.$valid && !edit.nameForm.name.$pristine), 'has-error': (!edit.nameForm.name.$valid && !edit.nameForm.name.$pristine) || (!edit.nameForm.name.$valid && edit.nameForm.$submitted)}">
+            <label>Name</label>
+            <input ng-disabled="edit.disabled" class="form-control" type="text" name="name" placeholder="Please enter your Name" ng-model="newName" ng-pattern="/^[a-zA-Z ]+$/" ng-minlength="3" ng-maxlength="20" required>
+            <p class="help-block" ng-show="(!edit.nameForm.name.$pristine && edit.nameForm.name.$error.required) || (edit.nameForm.$submitted && edit.nameForm.name.$error.required)">This field is required</p>
+            <ul class="help-block" ng-show="(!edit.nameForm.name.$pristine && edit.nameForm.name.$error.pattern) || (!edit.nameForm.name.$pristine && edit.nameForm.name.$error.minlength) || (!edit.nameForm.name.$pristine && edit.nameForm.name.$error.maxlength)">
+                <li>Must have a space in between first and last name</li>
+                <li>Must not contain any special characters or numerals</li>
+                <li>Must contain at least 3 characters but no more than 20</li>
+            </ul>
+        </div>
+        <br>
+
+        <button ng-disabled="edit.disabled" class="btn btn-primary" type="submit">Update</button>
+    </form>
+    <br>
+
+    <!-- Phase 2: Username -->
+    <form name="edit.usernameForm" ng-show="edit.phase2" ng-submit="edit.updateUsername(newUsername, edit.usernameForm.username.$valid)" novalidate>
+        <!-- Username -->
+        <div ng-class="{ 'has-success': (edit.usernameForm.username.$valid && !edit.usernameForm.username.$pristine), 'has-error': (!edit.usernameForm.username.$valid && !edit.usernameForm.username.$pristine) || (!edit.usernameForm.username.$valid && edit.usernameForm.$submitted)}">
+            <label>Username</label>
+            <input ng-disabled="edit.disabled" class="form-control" type="text" name="username" placeholder="Please enter the Username" ng-model="newUsername" ng-pattern="/^[a-zA-Z0-9]+$/" ng-minlength="3" ng-maxlength="25" required>
+            <p class="help-block" ng-show="(!edit.usernameForm.username.$pristine && edit.usernameForm.username.$error.required) || (edit.usernameForm.$submitted && edit.usernameForm.username.$error.required)">This field is required</p>
+            <ul class="help-block" ng-show="(!edit.usernameForm.username.$pristine && edit.usernameForm.username.$error.pattern) || (!edit.usernameForm.username.$pristine && edit.usernameForm.username.$error.minlength) || (!edit.usernameForm.username.$pristine && edit.usernameForm.username.$error.maxlength)">
+                <li>Must contain at least 3 characters but no more than 25</li>
+            </ul>
+        </div>
+        <br>
+
+        <button ng-disabled="edit.disabled" class="btn btn-primary" type="submit">Update</button>
+    </form>
+    <br>
+
+    <!-- Phase 3: Email -->
+    <form name="edit.emailForm" ng-show="edit.phase3" ng-submit="edit.updateEmail(newEmail, edit.emailForm.email.$valid)" novalidate>
+        <!-- Email -->
+        <div ng-class="{ 'has-success': (edit.emailForm.email.$valid && !edit.emailForm.email.$pristine), 'has-error': (!edit.emailForm.email.$valid && !edit.emailForm.email.$pristine) || (!edit.emailForm.email.$valid && edit.emailForm.$submitted)}">
+            <label>Email</label>
+            <input ng-disabled="edit.disabled" class="form-control" type="text" name="email" placeholder="Please enter the Email" ng-model="newEmail" ng-pattern="/[a-zA-Z0-9\._]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,4}/" ng-minlength="5" ng-maxlength="50" required>
+            <p class="help-block" ng-show="(!edit.emailForm.email.$pristine && edit.emailForm.email.$error.required) || (edit.emailForm.$submitted && edit.emailForm.email.$error.required)">This field is required</p>
+            <ul class="help-block" ng-show="(!edit.emailForm.email.$pristine && edit.emailForm.email.$error.pattern) || (!edit.emailForm.email.$pristine && edit.emailForm.email.$error.minlength) || (!edit.emailForm.email.$pristine && edit.emailForm.email.$error.maxlength)">
+                <li>Must contain at least 5 characters but no more than 50</li>
+            </ul>
+        </div>
+        <br>
+
+        <button ng-disabled="edit.disabled" class="btn btn-primary" type="submit">Update</button>
+    </form>
+    <br>
+
+    <!-- Phase 4: Permission -->
+    <div>
+        <label>Current Permission:&nbsp;&nbsp;</label>{{ newPermission }}
+        <br><br>
+        <button type="button" class="btn btn-success" ng-disabled="edit.disableUser" ng-click="edit.updatePermission('user');">User</button>&nbsp;
+        <button type="button" class="btn btn-info" ng-disabled="edit.disableModerator" ng-click="edit.updatePermission('moderator');">Moderator</button>&nbsp;
+        <button type="button" class="btn btn-warning" ng-disabled="edit.disableAdmin" ng-click="edit.updatePermission('admin');">Admin</button>
+    </div>
+    <br>
+    
+    <div class="row show-hide-message" ng-show="edit.successMsg">
+        <div class="alert alert-success">{{ edit.successMsg }}</div>
+    </div>
+
+    <br>
+
+    <div class="row show-hide-message" ng-show="edit.errorMsg">
+        <div class="alert alert-danger">{{ edit.errorMsg }}</div>
+    </div>
+
+</div>

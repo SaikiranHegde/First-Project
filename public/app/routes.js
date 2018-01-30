@@ -76,6 +76,14 @@ var app = angular.module('appRoutes', ['ngRoute'])
                 authenticated: true,
                 permission: ['admin', 'moderator']
             })
+        
+            .when('/edit/:id', {
+                templateUrl: 'app/views/pages/management/edit.html',
+                controller: 'editCtrl',
+                controllerAs: 'edit',
+                authenticated: true,
+                permission: ['admin', 'moderator']
+            })
 
             .otherwise({
                 redirectTo: '/'
