@@ -40,16 +40,16 @@
 
 </head>
 
-<body ng-app="userApp" ng-controller="mainCtrl as main" ng-show="main.loadme" ng-cloak style="margin-left: 150px; margin-right: 150px">
+<body ng-app="userApp" ng-controller="mainCtrl as main" ng-show="main.loadme" ng-cloak>
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false">
             <span class="sr-only">Toggle Navigation</span>
-            <span class="sr-only"></span>
-            <span class="sr-only"></span>
-            <span class="sr-only"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
             </button>
                 <a class="navbar-brand" href="#">User Management</a>
             </div>
@@ -69,18 +69,6 @@
                     </li>
                     <li>
                         <a href="/management" ng-show="main.isLoggedIn && main.authorized">Management</a>
-                    </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another Action</a></li>
-                            <li><a href="#">Something else</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li class="dropdown-header">Nav Header</li>
-                            <li><a href="#">Seperated Link</a></li>
-                            <li><a href="#">One more seperated link</a></li>
-                        </ul>
                     </li>
                     <li>
                         <a href="/profile" ng-show="main.isLoggedIn">Hello, {{ main.username }}</a>

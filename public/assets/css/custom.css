@@ -6,6 +6,11 @@
     float: right;
 }
 
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
 $c1: #114357;
 $c2: #826C75;
 $c3: #F29492;

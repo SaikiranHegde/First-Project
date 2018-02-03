@@ -1,4 +1,4 @@
-angular.module('userApp', ['appRoutes', 'userController', 'userServices', 'ngAnimate', 'mainController', 'authServices', 'emailController', 'managementContoller'])
+angular.module('userApp', ['appRoutes', 'userController', 'userServices', 'ngAnimate', 'mainController', 'authServices', 'emailController', 'managementController'])
 
 .config(function($httpProvider){
     $httpProvider.interceptors.push('AuthInterceptors');

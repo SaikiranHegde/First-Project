@@ -1,33 +1,35 @@
-<div class="page-header">
-    <h1>Resend Activation Link</h1>
-</div>
+<div class="row">
+    <div class="col-xs-8 col-md-5 col-centered">
+        <div class="page-header">
+            <h1>Resend Activation Link</h1>
+        </div>
 
-<div style="margin-left: 50px; margin-right: 50px">
-<form ng-submit="resend.checkCredentials()">
-    <!-- Username -->
-    <label>Username</label>
-    <input ng-disabled="resend.disabled" class="form-control" type="text" name="username" placeholder="Please enter the Username" ng-model="resend.loginData.username">
-    <br>
+        <form ng-submit="resend.checkCredentials()">
+            <!-- Username -->
+            <label>Username</label>
+            <input ng-disabled="resend.disabled" class="form-control" type="text" name="username" placeholder="Please enter the Username" ng-model="resend.loginData.username">
+            <br>
 
-    <!-- Password -->
-    <label>Password</label>
-    <input ng-disabled="resend.disabled" class="form-control" type="password" name="password" placeholder="Please enter the Password" ng-model="resend.loginData.password">
-    <br>
-    
-    <button ng-disabled="resend.disabled" class="btn btn-primary" type="submit">Submit</button>&nbsp;
-   <!-- <button class="btn btn-warning" type="button" ng-click="resend.twitter()">Twitter</button>-->
-        
-</form>
+            <!-- Password -->
+            <label>Password</label>
+            <input ng-disabled="resend.disabled" class="form-control" type="password" name="password" placeholder="Please enter the Password" ng-model="resend.loginData.password">
+            <br>
 
-<br>
+            <button ng-disabled="resend.disabled" class="btn btn-primary" type="submit">Submit</button>&nbsp;
+            <!-- <button class="btn btn-warning" type="button" ng-click="resend.twitter()">Twitter</button>-->
 
-<div class="row show-hide-message" ng-show="resend.successMsg"> 
-    <div class="alert alert-success">{{ resend.successMsg }}</div>
-</div>
+        </form>
 
-<br>
+        <br>
 
-<div class="row show-hide-message" ng-show="resend.errorMsg">
-    <div class="alert alert-danger">{{ resend.errorMsg }} &nbsp; <a href="/resend" ng-show="resend.expired"><button type="button" class="btn btn-success">Resend Activation Link</button></a></div>
-</div> 
+        <div class="row show-hide-message" ng-show="resend.successMsg">
+            <div class="alert alert-success">{{ resend.successMsg }}</div>
+        </div>
+
+        <br>
+
+        <div class="row show-hide-message" ng-show="resend.errorMsg">
+            <div class="alert alert-danger">{{ resend.errorMsg }} &nbsp; <a href="/resend" ng-show="resend.expired"><button type="button" class="btn btn-success">Resend Activation Link</button></a></div>
+        </div>
+    </div>
 </div>

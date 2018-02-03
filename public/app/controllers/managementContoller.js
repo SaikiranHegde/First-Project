@@ -1,6 +1,6 @@
 angular.module('managementController', ['userServices'])
 
-    .controller('managementCtrl', function (User) {
+    .controller('managementCtrl', function (User, $scope) {
         var app = this;
 
         app.accessDenied = true;
@@ -8,6 +8,7 @@ angular.module('managementController', ['userServices'])
         app.editAccess = false;
         app.deleteAccess = false;
         app.limit = 10;
+        app.searchLimit = 0;
 
         function getUsers() {
             User.getUsers().then(function (data) {
@@ -57,6 +58,49 @@ angular.module('managementController', ['userServices'])
             });
         };
 
+        app.search = function (searchKeyword, number) {
+            if (searchKeyword) {
+                if (searchKeyword.length > 0) {
+                    app.limit = 0;
+                    $scope.searchFilter = searchKeyword;
+                    app.limit = number;
+                } else {
+                    $scope.searchFilter = undefined;
+                    app.limit = 0;
+                }
+            } else {
+                $scope.searchFilter = undefined;
+                app.limit = 0;
+            }
+        };
+
+        app.clear = function () {
+            $scope.number = 0;
+            app.limit = 0;
+            $scope.searchKeyword = undefined;
+            $scope.searchFilter = undefined;
+            $scope.showMoreError = false;
+        };
+    
+        app.sortOrder = function(order){
+          app.sort = order;  
+        };
+    
+        app.advanceSearch = function(searchByUsername, searchByEmail, searchByName){
+            if(searchByUsername || searchByEmail || searchByName){
+                $scope.advanceSearchFilter = {};
+                if(searchByUsername) {
+                    $scope.advanceSearchFilter.username = searchByUsername;
+                }
+                if(searchByEmail) {
+                    $scope.advanceSearchFilter.email = searchByEmail;
+                }
+                if(searchByName) {
+                    $scope.advanceSearchFilter.name = searchByName;
+                }
+                app.searchLimit = undefined;
+            }
+        };
     })
 
     .controller('editCtrl', function ($scope, $routeParams, User, $timeout) {
@@ -260,5 +304,4 @@ angular.module('managementController', ['userServices'])
                 }
             });
         };
-
     });
