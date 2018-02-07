@@ -6,22 +6,18 @@ var sgTransport = require('nodemailer-sendgrid-transport');
 
 module.exports = function (router) {
 
+    //Sendgrid configuration settings
     var options = {
         auth: {
-            api_user: 'saikiran_hegde',
-            api_key: 'send1234'
+            api_user: '<username>',
+            api_key: '<password>'
         }
-        /*,
-        	options: {
-        		proxy: 'http://saikiran_hegde:Passwd%402018@goaproxy.persistent.co.in:8080',
-                
-        	}*/
     }
 
+    //Nodemailer options
     var client = nodemailer.createTransport(sgTransport(options));
 
-    //User Registration
-    //http://localhost:8080/api/users
+    //Route to register new users
     router.post('/users', function (req, res) {
         var user = new User();
         user.username = req.body.username;
@@ -106,8 +102,7 @@ module.exports = function (router) {
         }
     });
 
-    //User Login
-    //http://localhost:8080/api/aunthenticate
+    //Route for user login
     router.post('/authenticate', function (req, res) {
         var validPassword;
         User.findOne({
@@ -165,8 +160,7 @@ module.exports = function (router) {
         });
     });
 
-    //Resend Activation Link
-    //http://localhost:8080/api/resend
+    //Route to verify user credentials before re-sending a new activation link 
     router.post('/resend', function (req, res) {
         var validPassword;
         User.findOne({
@@ -216,6 +210,7 @@ module.exports = function (router) {
         });
     });
 
+    //Route to send user a new activation link
     router.put('/resend', function (req, res) {
         var validPassword;
         User.findOne({
@@ -256,7 +251,7 @@ module.exports = function (router) {
         });
     });
 
-    //http://localhost:8080/api/checkusername
+    //Route to check if username is already taken
     router.post('/checkusername', function (req, res) {
         var validPassword;
         User.findOne({
@@ -279,7 +274,7 @@ module.exports = function (router) {
         });
     });
 
-    //http://localhost:8080/api/checkemail
+    // Route to check if e-mail is already taken
     router.post('/checkemail', function (req, res) {
         User.findOne({
             email: req.body.email
@@ -301,6 +296,7 @@ module.exports = function (router) {
         });
     });
 
+    //Route to activate the user's account 
     router.put('/activate/:token', function (req, res) {
         User.findOne({
             temptoken: req.params.token
@@ -352,7 +348,7 @@ module.exports = function (router) {
         });
     });
 
-    //To get Username
+    //Route to send user's username
     router.get('/sendusername/:email', function (req, res) {
         User.findOne({
             email: req.params.email
@@ -393,6 +389,7 @@ module.exports = function (router) {
         });
     });
 
+    //Route to send reset link
     router.put('/resetpassword', function (req, res) {
         User.findOne({
             email: req.body.email
@@ -448,7 +445,7 @@ module.exports = function (router) {
         });
     });
 
-
+    //Route to verify user's e-mail activation link
     router.get('/resetpassword/:token', function (req, res) {
         User.findOne({
             resettoken: req.params.token
@@ -478,7 +475,7 @@ module.exports = function (router) {
         });
     });
 
-
+    //Route to save user's new password
     router.put('/savepassword', function (req, res) {
         User.findOne({
             username: req.body.username
@@ -525,7 +522,7 @@ module.exports = function (router) {
         });
     });
 
-    //Middleware
+    // Middleware for Routes that checks for token - Place all routes after this, that require the user to already be logged in
     router.use(function (req, res, next) {
         var token = req.body.token || req.body.query || req.headers['x-access-token'];
         if (token) {
@@ -549,12 +546,12 @@ module.exports = function (router) {
 
     });
 
-    //http://localhost:8080/api/userInfo
+    //Route to get currently logged in user
     router.post('/userInfo', function (req, res) {
         res.send(req.decoded);
     });
 
-    //Provide New Token to User
+    //Route to provide the user with a new token
     router.get('/renewToken/:username', function (req, res) {
         User.findOne({
             username: req.params.username
@@ -580,6 +577,7 @@ module.exports = function (router) {
         });
     });
 
+    //Route to get the current user's permission
     router.get('/permission', function (req, res) {
         User.findOne({
             username: req.decoded.username
@@ -599,6 +597,7 @@ module.exports = function (router) {
         });
     });
 
+    //Route to get all users for management page
     router.get('/management', function (req, res) {
         User.find({}, function (err, users) {
             if (err) throw err;
@@ -636,6 +635,7 @@ module.exports = function (router) {
         });
     });
 
+    //Route to delete a user
     router.delete('/management/:username', function (req, res) {
         var deletedUser = req.params.username;
 
@@ -668,6 +668,7 @@ module.exports = function (router) {
         });
     });
 
+    //Route to get the user that needs to be edited
     router.get('/edit/:id', function (req, res) {
         var editUser = req.params.id;
 
@@ -708,6 +709,7 @@ module.exports = function (router) {
         });
     });
 
+    //Route to update/edit a user
     router.put('/edit', function (req, res) {
         var editUser = req.body.id;
 

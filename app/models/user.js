@@ -4,6 +4,7 @@ var bcrypt = require('bcrypt-nodejs');
 var titlize = require('mongoose-title-case');
 var validate = require('mongoose-validator');
 
+//User Name Validator
 var nameValidator = [
   validate({
         validator: 'matches',
@@ -17,6 +18,7 @@ var nameValidator = [
     })
 ];
 
+//E-mail Validator
 var emailValidator = [
   validate({
         validator: 'isEmail',
@@ -29,6 +31,7 @@ var emailValidator = [
     })
 ];
 
+//Username Validator
 var usernameValidator = [
   validate({
         validator: 'isAlphanumeric',
@@ -41,6 +44,7 @@ var usernameValidator = [
     })
 ];
 
+//Password Validator
 var passwordValidator = [
      validate({
         validator: 'isLength',
@@ -49,6 +53,7 @@ var passwordValidator = [
     })
 ];
 
+//User Mongoose Schema
 var UserSchema = new Schema({
     name: {
         type: String,
@@ -95,30 +100,9 @@ var UserSchema = new Schema({
     }
 });
 
+//Mongoose Plugin to change fields to title case
 UserSchema.plugin(titlize, {
     paths: ['name']
 });
-
-
-/*UserSchema.pre('save', function (next) {
-    var user = this;
-    bcrypt.hash(user.password, null , null, function (err, hash) {
-        if (err) return next(err);
-        user.password = hash;
-        next();
-    });
-});
-
-UserSchema.methods.comparePassword = function (password) {
-    //return bcrypt.compareSync(password, this.password);
-    bcrypt.compare(password, this.password, function (err, res){
-                    console.log(res);
-                   return res;
-    });
-    bcrypt.hash(password, null, null, function (err, hash) {
-        console.log(hash);
-    });
-};*/
-
 
 module.exports = mongoose.model('User', UserSchema);

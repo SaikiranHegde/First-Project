@@ -1,9 +1,11 @@
 angular.module('userController', ['userServices'])
 
+    //Controller: regCtrl is used for users to register an account
     .controller('regCtrl', function ($location, $timeout, User) {
 
         var app = this;
 
+        //Function to register the user in database
         app.regUser = function (regData, valid) {
 
             app.errorMsg = false;
@@ -11,9 +13,6 @@ angular.module('userController', ['userServices'])
 
             if (valid) {
                 User.create(app.regData).then(function (data) {
-                    /* console.log(data.data.success);
-                    console.log(data.data.message);*/
-
                     if (data.data.success) {
                         app.successMsg = data.data.message;
 
@@ -32,6 +31,7 @@ angular.module('userController', ['userServices'])
             }
         };
 
+        //Function to check if username is available for user to use
         app.checkUsername = function (regData) {
 
             app.usernameInvalid = false;
@@ -47,6 +47,7 @@ angular.module('userController', ['userServices'])
             });
         };
 
+        //Function to check if e-mail is available for user to use
         app.checkEmail = function (regData) {
 
             app.emailInvalid = false;

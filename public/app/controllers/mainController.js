@@ -1,10 +1,12 @@
     angular.module('mainController', ['authServices', 'userServices'])
-
+    
+        //Controller: mainCtrl is used to handle login and main index functions
         .controller('mainCtrl', function ($location, $timeout, Auth, $rootScope, $window, $interval, AuthToken, User) {
             var app = this;
 
-            app.loadme = false;
+            app.loadme = false; // Hide main HTML until data is obtained in Angular
 
+            // Function to check if the user's token has expired
             app.checkSession = function () {
                 if (Auth.isLoggedIn()) {
                     app.checkingSession = true;
@@ -36,6 +38,7 @@
 
             app.checkSession();
 
+            //Function to show bootstrap modal
             var showModal = function (option) {
                 app.choiceMade = false;
                 app.modalHeader = undefined;
@@ -49,7 +52,7 @@
                     $("#myModal").modal({
                         backdrop: "static"
                     });
-                } else if (option === 2) { //Logout
+                } else if (option === 2) { //Logout user
                     app.hideButton = true;
                     app.modalHeader = "Logging Out";
                     $("#myModal").modal({
@@ -70,6 +73,7 @@
                 }, 4000);
             };
 
+            //Function that allows user to renew their token
             app.renewSession = function () {
                 app.choiceMade = true;
                 User.renewSession(app.username).then(function (data) {
@@ -82,7 +86,8 @@
                 });
                 hideModal();
             };
-
+        
+            //Function to expire session and logout
             app.endSession = function () {
                 app.choiceMade = true;
                 hideModal();
@@ -91,10 +96,12 @@
                 }, 1000);
             };
 
+            //Function to hide modal
             var hideModal = function () {
                 $("#myModal").modal("hide");
             }
 
+            //Run code every time a route changes
             $rootScope.$on('$routeChangeStart', function () {
                 if (!app.checkingSession) app.checkSession();
 
@@ -115,21 +122,13 @@
 
                     });
                 } else {
-                    //console.log("Failure: User is Not Logged In");
                     app.isLoggedIn = false;
                     app.username = '';
                     app.loadme = true;
                 }
             });
 
-
-            // Function to redirect users to twitter authentication page
-            /*this.twitter = function () {
-                console.log($window.location.host);
-                console.log($window.location.protocol);
-                $window.location = $window.location.protocol + '//' + $window.location.host + '/auth/twitter';
-            };*/
-
+            //Function that performs login
             app.doLogin = function () {
 
                 Auth.login(app.loginData).then(function (data) {
@@ -159,7 +158,8 @@
                     }
                 });
             };
-
+            
+            //Function that performs logout
             app.logOut = function () {
                 showModal(2);
             };
